@@ -19,16 +19,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd todo-list
+          cd webapp-concept/todo-list 
           pip install -r requirements.txt flake8
 
       - name: Check Python syntax
         run: |
-          cd todo-list
+          cd webapp-concept/todo-list 
           python -m py_compile app.py
 
       - name: Run linter (flake8)
         run: |
-          cd todo-list
+          cd webapp-concept/todo-list 
           flake8 --max-line-length=120 --ignore=E501,W503 .
 
