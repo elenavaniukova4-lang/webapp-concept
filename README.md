@@ -74,3 +74,72 @@ SQLite используется для хранения данных прило�
 >     └── css/
 >         └── style.css
 > 
+## Схема базы данных
+
+**Таблица `tasks`** — список задач:
+| Поле | Тип | Описание |
+|------|-----|----------|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT | Уникальный идентификатор |
+| `title` | TEXT NOT NULL | Название задачи |
+| `completed` | BOOLEAN NOT NULL DEFAULT 0 | Статус выполнения (`0` — не выполнено, `1` — выполнено) |
+| `created_at` | TIMESTAMP DEFAULT CURRENT_TIMESTAMP | Дата и время создания |
+
+> 💡 База данных `tasks.db` создаётся автоматически при первом запуске на основе файла `database/schema.sql`.
+
+##  Маршруты приложения
+
+| Метод | Путь | Описание |
+|-------|------|----------|
+| GET | `/` | Главная страница — список всех задач |
+| POST | `/add` | Добавить новую задачу |
+| GET | `/toggle/<int:task_id>` | Переключить статус задачи (выполнена/не выполнена) |
+| GET | `/delete/<int:task_id>` | Удалить задачу |
+
+##  Запуск проекта
+
+### 1. Клонировать репозиторий и перейти в папку
+
+```bash
+git clone https://github.com/elenavaniukova4-lang/webapp-concept.git
+cd webapp-concept/todo-list
+```
+
+### 2. Создать виртуальное окружение и установить зависимости
+
+**Windows (PowerShell или cmd):**
+```powershell
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+**Linux / macOS:**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### 3. Запустить приложение
+
+```bash
+python app.py
+```
+
+После запуска в консоли появится сообщение примерно такого вида:
+
+```
+ * Running on http://127.0.0.1:5000
+```
+
+Откройте в браузере адрес: **http://127.0.0.1:5000**
+
+База данных `tasks.db` будет создана автоматически при первом запуске на основе файла `database/schema.sql`.
+
+### 4. Остановить приложение
+
+Нажмите `Ctrl + C` в терминале.
+
+
+
+
