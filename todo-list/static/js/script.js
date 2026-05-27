@@ -1,4 +1,4 @@
-// Подтверждение удаления (опционально)
+// Подтверждение удаления 
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('a[href^="/delete/"]').forEach(link => {
         link.addEventListener('click', function(e) {
