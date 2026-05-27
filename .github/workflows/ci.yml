@@ -12,6 +12,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Debug: Show directory structure
+        run: |
+          ls -la
+          echo "----"
+          find . -type d -name "todo-list" | head -5
+
       - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
@@ -19,16 +25,28 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd todo-list
+          # Попробуем оба варианта — сначала без webapp-concept
+          if [ -d "todo-list" ]; then
+            cd todo-list
+          elif [ -d "webapp-concept/todo-list" ]; then
+            cd webapp-concept/todo-list
+          else
+            echo "❌ ERROR: todo-list folder not found!"
+            ls -R
+            exit 1
+          fi
           pip install -r requirements.txt flake8
 
       - name: Check Python syntax
         run: |
-          cd todo-list
-          python -m py_compile app.py
+          if [ -f "app.py" ]; then
+            python -m py_compile app.py
+          else
+            echo "❌ app.py not found in current directory"
+            exit 1
+          fi
 
       - name: Run linter (flake8)
         run: |
-          cd todo-list
           flake8 --max-line-length=120 --ignore=E501,W503 .
 
