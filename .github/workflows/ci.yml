@@ -12,16 +12,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Debug: Show directory structure
-        run: |
-          echo "Current directory: $(pwd)"
-          echo "Contents of root:"
-          ls -la
-          echo "Contents of webapp-concept:"
-          ls -la webapp-concept
-          echo "Contents of todo-list:"
-          ls -la webapp-concept/todo-list
-
       - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
@@ -29,16 +19,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd webapp-concept/todo-list
           pip install -r requirements.txt flake8
 
       - name: Check Python syntax
         run: |
-          cd webapp-concept/todo-list
           python -m py_compile app.py
 
       - name: Run linter (flake8)
         run: |
-          cd webapp-concept/todo-list
           flake8 --max-line-length=120 --ignore=E501,W503 .
 
