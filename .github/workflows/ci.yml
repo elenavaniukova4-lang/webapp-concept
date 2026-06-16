@@ -20,15 +20,20 @@ jobs:
       - name: Install dependencies
         run: |
           cd todo-list
-          pip install -r requirements.txt flake8
+          pip install -r requirements.txt flake8 pytest
 
       - name: Check Python syntax
         run: |
           cd todo-list
-          python -m py_compile app.py
+          python -m py_compile app.py test_app.py
 
       - name: Run linter (flake8)
         run: |
           cd todo-list
           flake8 --max-line-length=120 --ignore=E501,W503 .
+
+      - name: Run tests
+        run: |
+          cd todo-list
+          python -m pytest test_app.py -v
 
