@@ -141,5 +141,11 @@ python app.py
 Нажмите `Ctrl + C` в терминале.
 
 
+### Запуск тестов
+
+```bash
+cd todo-list
+python -m pytest test_app.py -v
+
 
 
