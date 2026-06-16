@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Мой To-Do List</h1>
+
+<form method="POST" action="/add">
+    <input type="text" name="title" placeholder="Что нужно сделать?" required>
+    <button type="submit">➕ Добавить</button>
+</form>
+
+<div class="tasks">
+    {% for task in tasks %}
+    <div class="task {% if task['completed'] %}completed{% endif %}">
+        <span>{{ task['title'] }}</span>
+        <div class="actions">
+            <a href="/toggle/{{ task['id'] }}">✅</a>
+            <a href="/delete/{{ task['id'] }}">🗑️</a>
+        </div>
+    </div>
+    {% else %}
+    <p>Нет задач. Добавьте первую!</p>
+    {% endfor %}
+</div>
+
+<p class="stats">Всего задач: {{ tasks|length }}</p>
+{% endblock %}
+
