@@ -1,0 +1,26 @@
+rules:
+  - id: python.flask.security.audit.secure-session-configuration.secure-session-configuration
+    patterns:
+      - pattern: |
+          $APP = Flask(...)
+          ...
+          $APP.secret_key = "..."
+    message: "Hardcoded secret key detected. Use environment variables."
+    languages: [python]
+    severity: WARNING
+
+  - id: python.lang.security.audit.unsafe-exec-use.unsafe-exec-use
+    patterns:
+      - pattern: exec(...)
+      - pattern: eval(...)
+    message: "Avoid using exec() or eval() — potential code injection"
+    languages: [python]
+    severity: ERROR
+
+  - id: python.lang.correctness.common-mistakes.assert-used-in-production
+    patterns:
+      - pattern: assert ...
+    message: "Assert statements are disabled in production with -O flag"
+    languages: [python]
+    severity: WARNING
+
