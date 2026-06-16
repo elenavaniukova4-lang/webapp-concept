@@ -1,7 +1,14 @@
 import pytest
 import tempfile
 import os
-from app import app
+import sys
+import sqlite3
+
+# Добавляем текущую директорию в PYTHONPATH
+sys.path.insert(0, '.')
+
+from app import app, DB_PATH  # Теперь импорт работает
+
 
 @pytest.fixture
 def client():
@@ -14,7 +21,6 @@ def client():
     with app.test_client() as client:
         with app.app_context():
             # Инициализируем БД
-            import sqlite3
             conn = sqlite3.connect(db_path)
             conn.execute('''
                 CREATE TABLE IF NOT EXISTS habits (
@@ -31,11 +37,13 @@ def client():
     os.close(db_fd)
     os.unlink(db_path)
 
+
 def test_index_page(client):
     """Проверяет, что главная страница загружается"""
     rv = client.get('/')
     assert rv.status_code == 200
     assert b'To-Do List' in rv.data
+
 
 def test_add_task(client):
     """Проверяет добавление задачи"""
@@ -43,14 +51,13 @@ def test_add_task(client):
     assert rv.status_code == 200
     assert b'Test Task' in rv.data
 
+
 def test_toggle_task(client):
     """Проверяет переключение статуса задачи"""
     # Сначала добавляем задачу
     client.post('/add', data={'title': 'Toggle Me'})
     
     # Получаем ID задачи из БД
-    from app import DB_PATH
-    import sqlite3
     conn = sqlite3.connect(app.config['DATABASE'])
     cursor = conn.execute('SELECT id FROM habits WHERE title = ?', ('Toggle Me',))
     task_id = cursor.fetchone()[0]
@@ -60,13 +67,13 @@ def test_toggle_task(client):
     rv = client.get(f'/toggle/{task_id}', follow_redirects=True)
     assert rv.status_code == 200
 
+
 def test_delete_task(client):
     """Проверяет удаление задачи"""
     # Сначала добавляем задачу
     client.post('/add', data={'title': 'Delete Me'})
     
     # Получаем ID задачи
-    import sqlite3
     conn = sqlite3.connect(app.config['DATABASE'])
     cursor = conn.execute('SELECT id FROM habits WHERE title = ?', ('Delete Me',))
     task_id = cursor.fetchone()[0]
