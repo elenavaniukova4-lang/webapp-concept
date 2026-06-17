@@ -84,8 +84,8 @@ webapp-concept/
 
 1. **Секретный ключ** загружается из переменной окружения:
 
-```python
-   app.secret_key = os.getenv('SECRET_KEY', 'dev-fallback-key')
+'''python
+   app.secret_key = os.getenv('SECRET_KEY', 'dev-fallback-key')'''
 
 
 
