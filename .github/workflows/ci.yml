@@ -37,3 +37,20 @@ jobs:
           cd todo-list
           python -m pytest test_app.py -v
 
+  sbom-analysis:  # ← ДОЛЖЕН БЫТЬ НА ТОМ ЖЕ УРОВНЕ, ЧТО И quality-gate
+    name: SBOM Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: true
+          format: 'table'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+          input: 'todo-list/requirements.txt'
+
