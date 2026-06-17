@@ -147,12 +147,12 @@ python app.py
 cd todo-list
 python -m pytest test_app.py -v
 
-** Анализ зависимостей (SBOM)
+## Анализ зависимостей (SBOM)
 
 Проект использует [Trivy](https://aquasecurity.github.io/trivy/) для проверки зависимостей:
 
 
 ```bash
-* Локальный запуск
+# Локальный запуск
 trivy fs --security-checks vuln --exit-code 1 todo-list/requirements.txt
 
