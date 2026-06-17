@@ -141,11 +141,18 @@ python app.py
 Нажмите `Ctrl + C` в терминале.
 
 
-### Запуск тестов
+### 5. Запуск тестов
 
 ```bash
 cd todo-list
 python -m pytest test_app.py -v
 
+** Анализ зависимостей (SBOM)
 
+Проект использует [Trivy](https://aquasecurity.github.io/trivy/) для проверки зависимостей:
+
+
+```bash
+* Локальный запуск
+trivy fs --security-checks vuln --exit-code 1 todo-list/requirements.txt
 
