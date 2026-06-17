@@ -4,6 +4,8 @@ import os
 
 
 app = Flask(__name__)
+# Используем переменную окружения для секретного ключа
+app.secret_key = os.getenv('SECRET_KEY', 'fallback-secret-key-for-dev')
 DB_PATH = 'tasks.db'
 
 
