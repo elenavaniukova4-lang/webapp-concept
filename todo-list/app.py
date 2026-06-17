@@ -4,6 +4,8 @@ import os
 
 
 app = Flask(__name__)
+# Используем переменную окружения для секретного ключа
+app.secret_key = os.getenv('SECRET_KEY', 'fallback-secret-key-for-dev')
 DB_PATH = 'tasks.db'
 
 
@@ -25,10 +27,35 @@ def index():
     return render_template('index.html', tasks=tasks)
 
 
-# ... остальные функции с 2 пустыми строками между ними ...
+@app.route('/add', methods=['POST'])
+def add_task():
+    title = request.form.get('title', '').strip()
+    if title:
+        conn = sqlite3.connect(DB_PATH)
+        conn.execute('INSERT INTO habits (title) VALUES (?)', (title,))
+        conn.commit()
+        conn.close()
+    return redirect(url_for('index'))
+
+
+@app.route('/toggle/<int:task_id>')
+def toggle_task(task_id):
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute('UPDATE habits SET completed = 1 - completed WHERE id = ?', (task_id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('index'))
+
+
+@app.route('/delete/<int:task_id>')
+def delete_task(task_id):
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute('DELETE FROM habits WHERE id = ?', (task_id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-
 
